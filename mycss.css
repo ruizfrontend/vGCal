@@ -1,0 +1,79 @@
+ html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,dd,dl,dt,li,ol,ul,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;}table{border-collapse:collapse;border-spacing:0;}ol,ul{list-style:none;}q:before,q:after,blockquote:before,blockquote:after{content:"";}
+* {outline: none;-moz-outline: none;	}
+body  {
+	background:url(http://imaidentidades.es/pf/bg2.png)  #FAF6F5;
+	background-color:#fbf4f2;
+	font: 100% Arial, Helvetica, sans-serif;margin: 0;padding: 0;text-align: center; color:#999999;}
+h1 {text-shadow: 1px 1px 3px #AAA;font-size: 180%;color:#555;font-family:'Times New Roman', Times, serif;display:inline;padding-left:15px;padding-right:20px;}
+h2{padding-top: 5px;font-size:80%;}
+h4{display:inline;font-size:70%}
+#header { height: 180px;text-align: right;color: #333;box-shadow: 0 12px 30px -10px #000;color: #777;
+    background: rgba(255, 255, 255, 0.7);border: 5px solid #CCC;border-radius: 0px;}
+#header img{float:right;margin-left:15px;
+	border-style:solid;border-width:5px;border-color:#AAA5A6}
+#head_cont{padding:10px;}
+#head_load{padding: 90px 20px 0px 20px;font-size: 250%;text-align: left;font-weight: bold;}
+#header2 { padding-left:80px;display:none;}
+#header3 { padding-left:80px;display:none;}
+#header4 { display:none;}
+#foot{position:fixed;right:20px;bottom:0px;background-color:#F9F7F6;font-size:80%;
+	padding:4px 10px 0 10px;text-decoration:none;
+	border-top:3px solid #cfcacb;border-left:3px solid #cfcacb;	border-right:3px solid #cfcacb;}
+#foot:hover{border-color:#666666;}
+#foot a{color:red;text-decoration:none;}
+#foot a:visited,#foot a:link,#foot a:hover{color:red}
+#ff{display:block;height:20px;padding-top:50px;clear:both;}
+.main-cont{margin: 45px auto 10px auto;width: 695px;}
+#innerclick h2{font-size:180%;}
+#innerclick p{text-align:justify;}
+#ininner{padding:20px;}
+.listno{text-decoration:none;}
+.container{margin: 20px 0 0px 0;text-align: left;}
+#container {  width: 695px;margin: 20px auto 0px auto;text-align: left; margin-top: 6 px;}  
+#clIzq {float: left;width: 338px;}
+#clCent { float: right}
+#nav{padding-left: 5px;}
+.caja {width: 320px;display: block;border-style:solid;color: #777;
+	border-width:5px;border-color:#cfcacb;margin: 0px 0px 20px 0px;font-size: 60%;
+	-webkit-box-shadow: 0px 12px 30px -20px #000031;
+	-moz-box-shadow: 0px 12px 30px -20px #000031;
+	box-shadow: 0px 12px 30px -20px #000031;}
+.caja  .content{background-color: rgba(249, 247, 246, 0.8);padding:4px 10px 4px 10px;background-color: #F9F7F6;border-top: solid 5px #CFCACB;}
+.caja:hover {border-color:#666666;}
+.caja img:hover {opacity: 0.8;filter: alpha(opacity = 80);}
+
+.inline{display:inline;} 
+.rojo{color:red;}
+.titulo{color: #666;text-indent: -10px;font-size: 120%;padding: 6px 20px;
+	background-color: #F5F4F4;border-bottom: solid 2px #CCC;}
+.titulo:before{content:url(http://imaidentidades.es/pf/dwn.png);position: relative;right: 2px;top: 2px;}
+
+.descr{padding-left:10px;padding-bottom:5px;text-indent:-10px;font-size:110%;}
+.tit .descr{display: none;}
+.tit .lnks{display: none;}
+.content .titulo{display:none;}
+.filt{padding:4px;margin-lefT:10px;}
+.filt:hover{background-color:#D2CFE2}
+#filtros{padding-top:5px;}
+#float {position: fixed;right: 20px;top: 48px;-webkit-box-shadow: 0px 12px 30px -20px #000031;
+-moz-box-shadow: 0px 12px 30px -20px #000031;padding: 20px 10px;border-width:5px;border-color:#cfcacb;
+box-shadow: 0px 12px 30px -20px #000031;background: rgba(255, 255, 255, 0.7);border: solid 5px #CFCACB;}
+#float a{font-weight:bold;font-size:0.9em;text-decoration:none;}
+
+.single_image{height:17px;width:17px;background: url(http://imaidentidades.es/pf/file.png) no-repeat;
+	float:left;display:inline;font-size: 80%;}
+.lnks{overflow: auto;width: 100%}
+
+#f_up{width:45px;height:20px;display: block;margin-left:12px;cursor:default;
+	background-image: url(http://imaidentidades.es/pf/navcopia2.png);background-repeat: no-repeat; background-position:-59px 0px;}
+#f_le{width:20px;height:16px;float: left;display: inline;cursor:default;
+	background-image: url(http://imaidentidades.es/pf/navcopia2.png);background-repeat: no-repeat; background-position:-59px -20px;}
+#f_ri{width:20px;height:16px;float: left;display: inline;margin-left:30px;cursor:default;
+	background-image: url(http://imaidentidades.es/pf/navcopia2.png);background-repeat: no-repeat; background-position:-89px -20px;}
+#f_dow{width:45px;clear:both;float:left;display: inline;margin-left:12px;cursor:default;
+	height:20px;background-image: url(http://imaidentidades.es/pf/navcopia2.png);background-repeat: no-repeat; background-position:-59px -51px;}
+#f_up.no{background-position:0px 0px;}#f_le.no{background-position:0 -20px;}#f_ri.no{background-position:-30px -20px;}#f_dow.no{background-position:0 -51px;}
+#f_up.no:hover{background-position:-117px 0px;}#f_le.no:hover{background-position:-117px -20px;}#f_ri.no:hover{background-position:-147px -20px;}#f_dow.no:hover{background-position:-117px -51px;}
+#f_up:hover{background-position:-59px 0px}#f_le:hover{background-position:-59px -20px;}#f_ri:hover{background-position:-89px -20px;}#f_dow:hover{background-position:-59px -51px;}
+.no{cursor:pointer}
+	
