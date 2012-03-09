@@ -5,6 +5,7 @@
 	<title></title>
   <link href='http://fonts.googleapis.com/css?family=Wire+One' rel='stylesheet' type='text/css'>
   <script src="./raphael-min.js"></script>
+  <script src="./raphcal.js"></script>
   <link href="reset.css" rel="stylesheet" type="text/css">
   <style type="text/css">
     body{background:url(./img/bg.png);font-family:'Wire One', sans-serif;}
@@ -13,264 +14,37 @@
       h1{line-height: 1em;font-weight: 800;font-size: 6em;padding-left: 60px;text-shadow: 0 0 8px #ccc;}
       h2{font-size: 3em;font-weight: 600;margin-left: 80px;}
     #main{position:relative}
-    #html, #rph{height:600px;position:absolute;top:0;}
+    #main_html, #main_rph{height:600px;position:absolute;top:0;}
+    .main-ini{font-size: 4.6em;margin-top: 20px;}
+      .main-ini h3{display:inline;font-size:1.2em;}
+      .columns{margin-top:20px;font-size:.6em}
+      .columns2{margin-top:20px;font-size:1.4em;clear:both;}
+      .columns2_mini{font-size:.7em;}
+        .main-ini .col_3{float: left;width: 240px;margin-left: 30px;height: 150px;padding-top: 230px;}
+        .main-ini .col_3:first-child{margin-left:0px;}
+
+        .butt{width: 120px;margin: 20px auto;border: 1px solid #CCC;text-align: center;padding: 10px 0;
+        background: rgb(255,255,255); /* Old browsers */background: -moz-linear-gradient(top, rgba(255,255,255,1) 0%, rgba(229,229,229,1) 100%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(255,255,255,1)), color-stop(100%,rgba(229,229,229,1))); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(top, rgba(255,255,255,1) 0%,rgba(229,229,229,1) 100%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(top, rgba(255,255,255,1) 0%,rgba(229,229,229,1) 100%); /* Opera 11.10+ */
+background: -ms-linear-gradient(top, rgba(255,255,255,1) 0%,rgba(229,229,229,1) 100%); /* IE10+ */
+background: linear-gradient(top, rgba(255,255,255,1) 0%,rgba(229,229,229,1) 100%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#e5e5e5',GradientType=0 ); /* IE6-9 */}
+        .butt:hover{background: rgb(229,229,229); /* Old browsers */
+background: -moz-linear-gradient(top,  rgba(229,229,229,1) 0%, rgba(255,255,255,1) 100%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(229,229,229,1)), color-stop(100%,rgba(255,255,255,1))); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(top,  rgba(229,229,229,1) 0%,rgba(255,255,255,1) 100%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(top,  rgba(229,229,229,1) 0%,rgba(255,255,255,1) 100%); /* Opera 11.10+ */
+background: -ms-linear-gradient(top,  rgba(229,229,229,1) 0%,rgba(255,255,255,1) 100%); /* IE10+ */
+background: linear-gradient(top,  rgba(229,229,229,1) 0%,rgba(255,255,255,1) 100%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e5e5e5', endColorstr='#ffffff',GradientType=0 ); /* IE6-9 */
+color:#FF3726}
+    .butt:active{-webkit-box-shadow: inset 0px 0px 12px -1px #ccc;-moz-box-shadow: inset 0px 0px 11px -3px #ccc;box-shadow: inset 0px 0px 12px -1px #ccc;}
     #foot{margin-top: 650px;text-align: right;}
   </style>
   <script type="text/javascript">
   
-window.onload = function(){
-  
-  document.raphCal = function(){
-//Variables privadas
-    
-    var papelX =800,//tamaño del canvas
-    papelY=800,
-    mainCentroX = 400,//centro generico
-    mainCentroY = 330, mainRadius = 300,
-    diasCurrMth = 28, //dias del mes actual
-    currentTime = new Date ( ),
-    currH,currM ,currS,timeState,clkH,clkM,clkS,//reloj
-    angH = (Math.PI *2) / 12,angM = (Math.PI *2) / 60,angS = (Math.PI *2) / 60,
-    pasosINI = 50; //pasos y tiempo estandar de animación
-    tiempoINI = 500;
-    
-    var ui = function(){
-      var paper = Raphael(document.getElementById('rph'),papelX, papelY),
-      raphCalui = paper.set();
-      rphClk = paper.set();//reloj
-      rphCal = paper.set();//reloj
-      
-//simplifica angulos (elimina vueltas extras) 
-      var aSimpli = function(ang){
-        if (ang > 2*Math.PI){ ang=ang%(Math.floor(ang/(2*Math.PI))*2*Math.PI);return ang;};
-        if (ang < -(2*Math.PI)){ ang=ang%(Math.ceil(ang/(2*Math.PI))*2*Math.PI);return ang;};
-        return ang;
-     }
-     
-//generador de arcos -> devuelve trazado!
-     var rphArc  = function (a_start,a_end,centro_x,centro_y,radio,grosor){
-          
-      //si uno de los dos arcos es > que un círculo quitamos las vueltas extras
-     var a_start = aSimpli(a_start),
-     a_end= aSimpli(a_end);
-     
-     //generamos desde el angulo menor al mayor
-     if(a_start>a_end) {var tmp = a_end; a_end= a_start; a_start= tmp;}
-     
-     //valor de svg large-arc-flag
-     a_end-a_start>Math.PI ? large = 1 : large = 0;
-     
-     var radio2= radio+grosor;
-      path='M'+(centro_x+Math.cos(a_start)*radio)+','+(centro_y+Math.sin(a_start)*radio)+
-        ' A'+radio+','+radio+' 0 '+ large +',1 '+(centro_x+Math.cos(a_end)*radio)+','+(centro_y+Math.sin(a_end)*radio)+
-        ' L'+(centro_x+Math.cos(a_end)*radio2)+','+(centro_y+Math.sin(a_end)*radio2)+
-        ' A'+radio2+','+radio2+' 0 ' + large + ',0 ' +(centro_x+Math.cos(a_start)*radio2)+','+(centro_y+Math.sin(a_start)*radio2)+'Z';
-      return path;
-     };
-     
-//generador de arcos con animación -> devuelve arco generado
-     var rphArcGenP = function(ang_ini,ang_fin,mainCentroX,mainCentroY,mainRadius,gros,pasos,tiempo){
-      if (ang_ini>ang_fin){var tmp = ang_ini; ang_ini = ang_fin;ang_fin = tmp;}
-      var baseTiempo = tiempo / pasos,
-      ang_paso = (ang_fin-ang_ini)/pasos,
-      line = paper.path();
-      var rphArcGenPTime = function(i){
-        linepath = rphArc(ang_ini,(ang_ini+(i*ang_paso)),mainCentroX,mainCentroY,mainRadius,gros);
-        line.attr({'path':linepath,'fill':'#ccc','stroke':'none',});
-        if (i<pasos+1){window.setTimeout(rphArcGenPTime,baseTiempo,++i);}else{line.glow({'color':'#ddd'});};
-      };
-      rphArcGenPTime(1);
-      line.hover(function(){this.attr('fill','#3cc')},function(){this.attr('fill','#ccc')});
-      return line;
-    };
-    
-//genera entorno
-    var rphBaseMthP = function (days){ 
-          //contenedor
-      var base = paper.set();
-      
-          //círculo base
-      var circ_base = paper.circle(mainCentroX,mainCentroY,mainRadius-10),
-      circ_glow = circ_base.attr({'stroke-dasharray':'- ', 'stroke':'#bbb'}).glow({'color':'#ddd'});
-      base.push(circ_base);
-      base.push(circ_glow);
-      
-          //elementos radiales
-      ang_base = ((1/days)*2*Math.PI);
-      
-      for (i=0; i<days;i++){
-      
-        var ang=  i*ang_base;
-        
-          //lineas
-        var days_line= paper.path('M' + (mainCentroX  + Math.cos(ang) * (mainRadius -15)) + ',' + (mainCentroY  +Math.sin(ang) * (mainRadius -15)) + 
-          'l' + Math.cos(ang)*5 + ',' + Math.sin(ang)*5 );
-        days_line.attr({'stroke-dasharray':'- ', 'stroke':'#bbb'});
-        base.push(days_line);
-          
-          //texto dias
-        t_dist = 30 ;
-        
-        t = paper.text(mainCentroX  + Math.cos(ang+(ang_base/2)) * (mainRadius-t_dist), mainCentroY  + Math.sin(ang+(ang_base/2)) * (mainRadius-t_dist), i+1);
-        t.attr({'stroke-width':0,'fill':'#666','font-family':"'Wire One', sans-serif",'font-size':26});
-        t.hover(function(){this.attr({'fill':'#3cc','font-weight':'800'})},function(){this.attr({'fill':'#666','font-weight':'100'})});
-        base.push(t);
-        
-      };
-    return base;
-    };
-    
-//genera arco para dia completo o hora
-    var rphArcMthP = function (day, level, grosor, horaINI, horaEND){
-      var angDia = (Math.PI *2) / diasCurrMth,
-      diaIni = day *angDia,
-      diaFin = diaIni + angDia;
-      
-      if (arguments.length==3){
-        // asumimos que solo se pasa dia
-        return rphArcGenP(diaIni,diaFin,mainCentroX,mainCentroY,mainRadius+level,grosor,pasosINI,tiempoINI);
-      } else if (arguments.length==5){
-        // asumimos que se pasa dia y hora
-        var angINI, angEND;
-        if(horaEND == horaINI){return rphArcGenP(diaIni+(angDia*angINI),(diaIni+(angDia*angINI)+0.05),mainCentroX,mainCentroY,mainRadius+level,grosor,pasosINI,tiempoINI);;};
-        if(horaEND < horaINI) { var tmp = horaINI; horaINI = horaEND; horaEND = tmp;};
-        if (horaINI > 19) {angINI = 0.95} else if (horaINI< 9) {angINI = 0} else{angINI = (horaINI-8)/13};
-        if (horaEND < 9) {angEND = 0.05} else if (horaEND> 20) {angEND = 1} else{angEND = (horaEND-8)/13};
-        return rphArcGenP((diaIni+(angDia*angINI)),(diaIni+(angDia*angEND)),mainCentroX,mainCentroY,mainRadius+level,grosor,pasosINI,tiempoINI);
-      }
-    }
-   
-                          //Clock methods
-  //genera elementos del reloj
-    var rphArcClckP = function (){
-      if(!rphClk.length){ // if rphClk is empty (no clock)
-      
-        for (var i=0;i<3; i++){ rphClk.push(paper.path().attr({'fill':'#ccc','stroke':'#bbb'})
-          .hover(function(){console.log( clkH + ' ' + clkM + ' ' + clkS);this.attr({'fill':'#3cc'});},function(){this.attr({'fill':'#ddd'});}  // pending -> hover clck
-        ))};
-        
-          //círculo base
-        var circ_base = paper.circle(mainCentroX,mainCentroY,mainRadius-85),
-        circ_glow = circ_base.attr({'stroke-dasharray':'- ', 'stroke':'#bbb'}).glow({'color':'#ddd'});
-        rphClk.push(circ_base);
-        rphClk.push(circ_glow); 
-        
-         //elementos radiales 
-         
-         var ang_base = (2*Math.PI/60);
-        
-        for (i=0; i<60;i++){
-          var ang=  i*ang_base;
-            //lineas
-          var days_line= paper.path('M' + (mainCentroX  + Math.cos(ang) * (mainRadius -85)) + ',' + (mainCentroY  +Math.sin(ang) * (mainRadius -85)) + 
-            'l' + (-Math.cos(ang)*5 )+ ',' + (-Math.sin(ang)*5 ));
-          days_line.attr({'stroke-dasharray':'- ', 'stroke':'#bbb'});
-          rphClk.push(days_line);
-        }
-        var ang_base = (2*Math.PI/12);
-        
-        for (i=0; i<12;i++){
-          var ang=  i*ang_base;
-            //lineas
-          var days_line= paper.path('M' + (mainCentroX  + Math.cos(ang) * (mainRadius -80)) + ',' + (mainCentroY  +Math.sin(ang) * (mainRadius -80)) + 
-            'l' + (-Math.cos(ang)*25 )+ ',' + (-Math.sin(ang)*25 ));
-          days_line.attr({'stroke-dasharray':'- ', 'stroke':'#bbb'});
-          rphClk.push(days_line);
-        }
-            //texto horas
-        var ang_base = (2*Math.PI/4);
-        for (var i=0; i<4;i++){
-          var ang=  i*ang_base;
-          t_dist = 60 ;
-          
-          t = paper.text(mainCentroX  + Math.cos(ang) * (mainRadius-t_dist), mainCentroY  + Math.sin(ang) * (mainRadius-t_dist), (i+1)*3);
-          t.attr({'stroke-width':0,'fill':'#666','font-family':"'Wire One', sans-serif",'font-size':36});
-          t.hover(function(){this.attr({'fill':'#3cc','font-weight':'800'})},function(){this.attr({'fill':'#666','font-weight':'100'})});
-          rphClk.push(t);      
-        };
-        return rphClk;
-      } else {return 0;}
-    };
-    
-//inicializa REloj  
-    function rphArcClckTimeP () {
-      var currentTime = new Date ( );
-      clkH = currentTime.getHours ( );
-      clkM = currentTime.getMinutes ( );
-      clkS = currentTime.getSeconds ( );
-      if(!(clkH==currH)){rphClk[0].attr({'path': rphArc((-Math.PI/2+angH/2+clkH*angH),(-Math.PI/2-angH/2+clkH*angH),mainCentroX,mainCentroY,mainRadius-95,5)}).toFront();currH = clkH;  }
-      if(!(clkM==currM)){rphClk[1].attr({'path':  rphArc((-Math.PI/2+angM/2+clkM*angM),(-Math.PI/2-angM/2+clkM*angM),mainCentroX,mainCentroY,mainRadius-105,15)}).toFront();currM = clkM;}
-      if(!(clkS==currS)){rphClk[2].attr({'path':  rphArc((-Math.PI/2+0.008+clkS*angS),(-Math.PI/2-0.008+clkS*angS),mainCentroX,mainCentroY,mainRadius-110,30)}).toFront();currS = clkS; }
-      timeState = window.setTimeout(rphArcClckTimeP,1000);
-    };
-    
-// quita REloj  
-    var clckKillP = function(){
-      if(rphClk.length){
-        currH = currM = currS = 0;
-        window.clearTimeout(timeState);
-        rphClk.forEach(function(ths){if(!ths.removed){ths.remove();}})
-        rphClk.clear();
-      }
-    }
-    
-// oculta REloj  like kill, but keep the hours circle
-    var clckHideP = function(){
-      if(rphClk.length){
-        currH = currM = currS = 0;
-        window.clearTimeout(timeState);
-        rphClk.forEach(function(ths){if(!ths.removed){ths.remove();}})
-        rphClk.clear();
-      }
-      rphArcClckP();    
-    }
-    
-//  lanza REloj  
-    var clckStartP = function(){
-      rphArcClckP();
-      rphArcClckTimeP();
-    }
-
-//
-
-    /* Objecto publico retornado por la función:
-     methods:
-       rphClk  -> return the clock set
-       clckKill  -> stop the clock and clear the clock set
-       clckStart  -> start the clock if it's not
-       clckStart  -> stops the clock and shows only the hours circle (even if there was no clock)
-    ------------------------------------------------------*/
-//objeto público
-      return {
-          // clock methods
-        rphClk : rphClk, // the clock set of objects
-        clckKill : clckKillP,// stop the clock and clear the clock set
-        clckStart : clckStartP,// start the clock if rphlClik is empty
-        clckHide:clckHideP,// hide the clock but shows only the hours circle
-        
-          // calendar methods
-        rphBaseMth:rphBaseMthP,
-        clearBase : function(){
-          elmsBase.forEach(function(ths){
-            if(!ths.removed){ths.remove()};
-          });
-          elmsBase.clear();
-        },
-      };
-    }()
-    return {ui:ui};
-  }();
-    
-    //samples
- /*console.log(rphArc(3.6,1.9,mainCentroX,mainCentroY,mainRadius,10).attr({'fill':'#ccc','stroke':'none',}).glow({'color':'#ddd'}).hover(function(){this.attr('fill','#3cc')},function(){this.attr('fill','#ccc')}));
-  
-  console.log(document.raphCal.ui.rphArcMth(1,0,7));
-  console.log(document.raphCal.ui.rphArcMth(1,10,7,21,22));
-  console.log(document.raphCal.ui.rphArcMth(1,20,7,18,19));
-  console.log(document.raphCal.ui.rphArcMth(1,30,7,19,20));
-  console.log(document.raphCal.ui.rphArcMth(1,40,7,20,21));
-  */
-  }
   </script>
 </head>
 <body>
@@ -280,8 +54,20 @@ window.onload = function(){
         <h2>live visualization for your google Calendars</h2>
      </div>
      <div id="main">
-        <div id="rph"></div>
-        <div id="html"></div>
+        <div id="main_rph"></div>
+        <div id="main_html">
+          <div class="main-ini" >
+            <h3>Welcome to VisualGcal,</h3><span> a tool visually explore your Google calendars.</span> 
+            <div class="columns">
+              <div class="col_3">VisualGcal borns as an experiment to apply some javascript technologies and develop a rich experience to every users.</dIv>
+              <div class="col_3">VisualGcal borns as an experiment to apply some javascript technologies and develop a rich experienc for all users.</dIv>
+              <div class="col_3">VisualGcal borns as an experiment to apply some javascript technologies and develop a rich experienc for all users.</dIv>
+              <div class="columns2">to continue with your experience you need to allow the tool access to your calendars</div>
+              <div class="columns2_mini">We promise we won't take any data from you. In fact, no information is going out of this page, there is no backend programming. <strong>Everything runs just from your browser!</strong></div>
+              <div class="butt">Access now</div>
+             </div>
+          </div>
+        </div>
       </div>
       <div id="foot">
         <a href="http://www.w3.org/html/logo/">
