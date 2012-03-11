@@ -3,57 +3,39 @@ apiKey = 'AIzaSyASUlieEm5KbQJIcBZknjbB4nLkczj7HYM',
 scopes = 'https://www.googleapis.com/auth/calendar';
 
 //authorization, calls
-function handleClientLoad2() {
+function handleClientLoad() {
   gapi.client.setApiKey(apiKey);
   window.setTimeout(checkAuth,1);
 }
 
+//inmediate forces to display the google oauth window
 function checkAuth() {
-  gapi.auth.authorize({client_id: clientId, scope: scopes, immediate: true}, handleAuthResult);
-}
-
-function handleAuthClick(event) {
   gapi.auth.authorize({client_id: clientId, scope: scopes, immediate: false}, handleAuthResult);
-  return false;
 }
 
-    //if no authorization, show the button and 
+//if error or request, show
 function handleAuthResult(authResult) {
-  var authorizeButton = document.getElementById('authorize-button');
   if (authResult) {//if  authorization granted 
-    authorizeButton.style.visibility = 'hidden';
-    makeApiCall();
+    oauthGetCals();
+    $('.main-ini').fadeOut(400,function(){$('#main_selCal').fadeIn(400)});
     return 1;
-  } else {//if no authorization
-    //authorizeButton.style.visibility = '';
-    //authorizeButton.onclick = handleAuthClick;
+  } else {
+    $('.main-ini .msj').html('Sorry, but there was an error login into your accont. Please try again')
+    return 0; //error
   }
 }
 
-function makeApiCall() {
+// get the calendars of the user
+function oauthGetCals() {
   gapi.client.load('calendar', 'v3', function() {
     var request = gapi.client.calendar.calendarList.list();
     request.execute(function(resp) {
-      showCalList(resp);/*
-      cals=resp.items;
-      padre = document.getElementById('container1');
-      for(i=0;i<cals.length;i++){
-        var elm = document.createElement('li');
-        elm.className="calendario" + ' cal'+i;
-        var texto = document.createTextNode(cals[i].summary);
-        elm.appendChild(texto);
-        padre.appendChild(elm);
-      } 
-
-
-      var heading = document.createElement('h4');
-      var image = document.createElement('img');
-      heading.appendChild(document.createTextNode(resp.kind));
-*/
+      showCalList(resp);
     });
   });
 }
 
+//process the calendars
 showCalList = function(cals){
       padre = document.getElementById('container1');
       var mainCont = document.getElementById('selCal');
@@ -78,6 +60,33 @@ showCalList = function(cals){
       formu.appendChild(formSet);
       mainCont.appendChild(formu);
 }
+
+//get the events of the selected calendars
+function oauthGetEvts(calsListArray){
+  var calsArray = new Array();
+  gapi.client.load('calendar', 'v3', requestt);
+  
+    function requestt(){
+      for (var j=0; j<calsListArray.length;j++){
+        var request = gapi.client.calendar.events.list({
+          'calendarId' : calsListArray[j],
+          'fields' : 'description,items(attendees(displayName,email),created,creator,end,htmlLink,location,organizer,start,summary)',
+        });
+        request.execute(function(resp) {
+          calsArray.push(resp);console.log(calsArray);
+      });
+    };
+    orderCals(calsArray);
+  };
+  
+}
+
+//process the events
+orderCals = function(calsArray){console.log(calsArray);
+  for (var i=0; i<calsArray.length;i++){
+  console.log(calsArray[i]);
+  }
+};
 
 function handleClientLoad2() {
     //samplecal

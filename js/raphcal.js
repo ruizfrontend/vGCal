@@ -1,7 +1,7 @@
 
 window.onload = function(){
   
-  document.raphCal = function(){
+  document.raphCal = function(){ 
 //Variables privadas
     var diasCurrMth = 28, //dias del mes actual
     currentTime = new Date ( ),
@@ -251,14 +251,7 @@ window.onload = function(){
     var ui = function(){
     
           //event to check if auth is ok and then display the page with the calendar list
-      $('.main-ini .butt').bind('click',function(){
-        if(handleClientLoad2()){// TEMP -> 
-          $('.main-ini').fadeOut(400,function(){$('#main_selCal').fadeIn(400)});
-        }else{
-          $('.main-ini .msj').html('Sorry, but there was an error login into your accont. Please try again')
-        };
-      }); 
-    }()
+      $('.main-ini .butt').bind('click',function(){handleClientLoad();}); 
     
           //event to check if calendar is selected, in that case, generate the calendar.
     $('#main_selCal .butt').bind('click',function(){
@@ -266,10 +259,12 @@ window.onload = function(){
       if (calsClickd.length){
         cals.splice(cals.length);
         for (var i = 0; i<calsClickd.length;i++){cals.push(calsClickd[i].id);};
+        oauthGetEvts(cals);
       } else{
         $('#main_selCal .msj').html('You have to select at least one calendar.');
       }
     });
+    }()
     
     return {
       raph:raph,

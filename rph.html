@@ -6,10 +6,10 @@
   <link href='http://fonts.googleapis.com/css?family=Wire+One' rel='stylesheet' type='text/css'>
   <script src="./js/jquery.min.js"></script>
   <script src="./js/raphael-min.js"></script>
-  <script src="./js/raphcal.js"></script>
   <script src="./js/oauth.js"></script>
-  <!--<script src="https://apis.google.com/js/client.js?onload=handleClientLoad"></script>-->
   <script src="https://apis.google.com/js/client.js"></script>
+  <script src="./js/raphcal.js"></script>
+  <!--<script src="https://apis.google.com/js/client.js?onload=handleClientLoad"></script>-->
   <link href="./css/reset.css" rel="stylesheet" type="text/css">
   <link href="./css/style.css" rel="stylesheet" type="text/css">
 </head>
@@ -20,7 +20,11 @@
         <h2>live visualization for your google Calendars</h2>
      </div>
      <div id="main">
+     
+                  <!--    calendar generica page!-->
         <div id="main_rph"></div>
+        
+                  <!--    Home page!-->
         <div id="main_html">
           <div class="main-ini" >
             <div class="ini-head"></div>
@@ -37,6 +41,8 @@
               <div class="columns2 msj"></div>
              </div>
           </div>
+          
+                  <!--    Calendar selection page!-->
           <div id="main_selCal" style="display:none;">
             <span>Select the calendars you want to check:</span> 
             <div class="columns" id="selCal"></div>
@@ -44,6 +50,8 @@
             <div class="columns2 msj"></div>
           </div>
         </div>
+        
+        
       </div>
       <div id="foot">
         <a href="http://www.w3.org/html/logo/">

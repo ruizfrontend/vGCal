@@ -15,7 +15,7 @@
     #main_html{font-size: 4.6em;margin-top: 20px;width: 800px;}
       .ini-head{font-size:0.9em}
       .main-ini h3{display:inline;font-size:1.2em;}
-      .columns{margin-top:20px;font-size:.6em}
+      .columns{margin-top:20px;font-size:.6em;height: 400px;overflow: auto;}
       .ini-action{margin-top:20px;font-size:.6em}
       .columns2{margin-top:20px;font-size:1.4em;clear:both;}
       .columns2_mini{font-size:.7em;}
