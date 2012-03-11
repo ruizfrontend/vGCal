@@ -5,9 +5,12 @@ window.onload = function(){
 //Variables privadas
     var diasCurrMth = 28, //dias del mes actual
     currentTime = new Date ( ),
-    currH,currM ,currS,timeState,clkH,clkM,clkS;//reloj
+    currH,currM ,currS,timeState,clkH,clkM,clkS,//reloj
+    cals = new Array;
     
-    /* ui : Objecto publico retornado por la función:
+    getCurrMthDays = function (){diasCurrMth = new Date(2012,(new Date().getMonth()+1),0).getDate();}(); //count 
+    
+    /* raph : Objecto publico para la gestión de los gráficos:
      methods:
         rphArc -> path generator (a_start,a_end,centro_x,centro_y,radio,grosor)
         rphArcGenP -> animate arc creation (ang_ini,ang_fin,mainCentroX,mainCentroY,mainRadius,gros,pasos,tiempo
@@ -19,7 +22,7 @@ window.onload = function(){
        clckStart  -> stops the clock and shows only the hours circle (even if there was no clock)
     ------------------------------------------------------*/
     
-    var ui = function(){
+    var raph = function(){
       var papelX =800,//tamaño del canvas
       papelY=700,
       mainCentroX = 400,//centro generico
@@ -244,20 +247,49 @@ window.onload = function(){
       };
     }()
     
-    return {ui:ui};
+    /* ui : Objecto publico para gestion de la interfaz:*/
+    var ui = function(){
+    
+          //event to check if auth is ok and then display the page with the calendar list
+      $('.main-ini .butt').bind('click',function(){
+        if(handleClientLoad2()){// TEMP -> 
+          $('.main-ini').fadeOut(400,function(){$('#main_selCal').fadeIn(400)});
+        }else{
+          $('.main-ini .msj').html('Sorry, but there was an error login into your accont. Please try again')
+        };
+      }); 
+    }()
+    
+          //event to check if calendar is selected, in that case, generate the calendar.
+    $('#main_selCal .butt').bind('click',function(){
+      var calsClickd = $('#selCal input:checked');
+      if (calsClickd.length){
+        cals.splice(cals.length);
+        for (var i = 0; i<calsClickd.length;i++){cals.push(calsClickd[i].id);};
+      } else{
+        $('#main_selCal .msj').html('You have to select at least one calendar.');
+      }
+    });
+    
+    return {
+      raph:raph,
+      ui:ui,
+      diasCurrMth:diasCurrMth,
+    };
   }();
     
     //samples
  /*console.log(rphArc(3.6,1.9,mainCentroX,mainCentroY,mainRadius,10).attr({'fill':'#ccc','stroke':'none',}).glow({'color':'#ddd'}).hover(function(){this.attr('fill','#3cc')},function(){this.attr('fill','#ccc')}));
   
-  console.log(document.raphCal.ui.rphArcMth(1,0,7));
-  console.log(document.raphCal.ui.rphArcMth(1,10,7,21,22));
-  console.log(document.raphCal.ui.rphArcMth(1,20,7,18,19));
-  console.log(document.raphCal.ui.rphArcMth(1,30,7,19,20));
-  console.log(document.raphCal.ui.rphArcMth(1,40,7,20,21));
+  console.log(document.raphCal.raph.rphArcMth(1,0,7));
+  console.log(document.raphCal.raph.rphArcMth(1,10,7,21,22));
+  console.log(document.raphCal.raph.rphArcMth(1,20,7,18,19));
+  console.log(document.raphCal.raph.rphArcMth(1,30,7,19,20));
+  console.log(document.raphCal.raph.rphArcMth(1,40,7,20,21));
   
-  document.raphCal.ui.clckStart()
-  document.raphCal.ui.rphArcClckTime()
-  document.raphCal.ui.rphBaseMth(28)
+  document.raphCal.raph.clckStart()
+  document.raphCal.raph.rphArcClckTime()
+  document.raphCal.raph.rphBaseMth(28)
   */
+ //document.raphCal.raph.rphBaseMth(document.raphCal.diasCurrMth)
   }

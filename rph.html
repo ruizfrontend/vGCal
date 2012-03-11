@@ -4,48 +4,14 @@
 	<meta charset="UTF-8">
 	<title></title>
   <link href='http://fonts.googleapis.com/css?family=Wire+One' rel='stylesheet' type='text/css'>
-  <script src="./raphael-min.js"></script>
-  <script src="./raphcal.js"></script>
-  <link href="reset.css" rel="stylesheet" type="text/css">
-  <style type="text/css">
-    body{background:url(./img/bg.png);font-family:'Wire One', sans-serif;}
-    #wrapper{width:800px;margin:0 auto}
-    #head{height:100px;}
-      h1{line-height: 1em;font-weight: 800;font-size: 6em;padding-left: 60px;text-shadow: 0 0 8px #ccc;}
-      h2{font-size: 3em;font-weight: 600;margin-left: 80px;}
-    #main{position:relative}
-    #main_html, #main_rph{height:600px;position:absolute;top:0;}
-    .main-ini{font-size: 4.6em;margin-top: 20px;}
-      .main-ini h3{display:inline;font-size:1.2em;}
-      .columns{margin-top:20px;font-size:.6em}
-      .columns2{margin-top:20px;font-size:1.4em;clear:both;}
-      .columns2_mini{font-size:.7em;}
-        .main-ini .col_3{float: left;width: 240px;margin-left: 30px;height: 150px;padding-top: 230px;}
-        .main-ini .col_3:first-child{margin-left:0px;}
-
-        .butt{width: 120px;margin: 20px auto;border: 1px solid #CCC;text-align: center;padding: 10px 0;
-        background: rgb(255,255,255); /* Old browsers */background: -moz-linear-gradient(top, rgba(255,255,255,1) 0%, rgba(229,229,229,1) 100%); /* FF3.6+ */
-background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(255,255,255,1)), color-stop(100%,rgba(229,229,229,1))); /* Chrome,Safari4+ */
-background: -webkit-linear-gradient(top, rgba(255,255,255,1) 0%,rgba(229,229,229,1) 100%); /* Chrome10+,Safari5.1+ */
-background: -o-linear-gradient(top, rgba(255,255,255,1) 0%,rgba(229,229,229,1) 100%); /* Opera 11.10+ */
-background: -ms-linear-gradient(top, rgba(255,255,255,1) 0%,rgba(229,229,229,1) 100%); /* IE10+ */
-background: linear-gradient(top, rgba(255,255,255,1) 0%,rgba(229,229,229,1) 100%); /* W3C */
-filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#e5e5e5',GradientType=0 ); /* IE6-9 */}
-        .butt:hover{background: rgb(229,229,229); /* Old browsers */
-background: -moz-linear-gradient(top,  rgba(229,229,229,1) 0%, rgba(255,255,255,1) 100%); /* FF3.6+ */
-background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(229,229,229,1)), color-stop(100%,rgba(255,255,255,1))); /* Chrome,Safari4+ */
-background: -webkit-linear-gradient(top,  rgba(229,229,229,1) 0%,rgba(255,255,255,1) 100%); /* Chrome10+,Safari5.1+ */
-background: -o-linear-gradient(top,  rgba(229,229,229,1) 0%,rgba(255,255,255,1) 100%); /* Opera 11.10+ */
-background: -ms-linear-gradient(top,  rgba(229,229,229,1) 0%,rgba(255,255,255,1) 100%); /* IE10+ */
-background: linear-gradient(top,  rgba(229,229,229,1) 0%,rgba(255,255,255,1) 100%); /* W3C */
-filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e5e5e5', endColorstr='#ffffff',GradientType=0 ); /* IE6-9 */
-color:#FF3726}
-    .butt:active{-webkit-box-shadow: inset 0px 0px 12px -1px #ccc;-moz-box-shadow: inset 0px 0px 11px -3px #ccc;box-shadow: inset 0px 0px 12px -1px #ccc;}
-    #foot{margin-top: 650px;text-align: right;}
-  </style>
-  <script type="text/javascript">
-  
-  </script>
+  <script src="./js/jquery.min.js"></script>
+  <script src="./js/raphael-min.js"></script>
+  <script src="./js/raphcal.js"></script>
+  <script src="./js/oauth.js"></script>
+  <!--<script src="https://apis.google.com/js/client.js?onload=handleClientLoad"></script>-->
+  <script src="https://apis.google.com/js/client.js"></script>
+  <link href="./css/reset.css" rel="stylesheet" type="text/css">
+  <link href="./css/style.css" rel="stylesheet" type="text/css">
 </head>
 <body>
   <div id="wrapper">
@@ -57,15 +23,25 @@ color:#FF3726}
         <div id="main_rph"></div>
         <div id="main_html">
           <div class="main-ini" >
+            <div class="ini-head"></div>
             <h3>Welcome to VisualGcal,</h3><span> a tool visually explore your Google calendars.</span> 
             <div class="columns">
               <div class="col_3">VisualGcal borns as an experiment to apply some javascript technologies and develop a rich experience to every users.</dIv>
               <div class="col_3">VisualGcal borns as an experiment to apply some javascript technologies and develop a rich experienc for all users.</dIv>
               <div class="col_3">VisualGcal borns as an experiment to apply some javascript technologies and develop a rich experienc for all users.</dIv>
+            </div>
+            <div class="ini-action">
               <div class="columns2">to continue with your experience you need to allow the tool access to your calendars</div>
               <div class="columns2_mini">We promise we won't take any data from you. In fact, no information is going out of this page, there is no backend programming. <strong>Everything runs just from your browser!</strong></div>
               <div class="butt">Access now</div>
+              <div class="columns2 msj"></div>
              </div>
+          </div>
+          <div id="main_selCal" style="display:none;">
+            <span>Select the calendars you want to check:</span> 
+            <div class="columns" id="selCal"></div>
+            <div class="butt">send</div>
+            <div class="columns2 msj"></div>
           </div>
         </div>
       </div>
